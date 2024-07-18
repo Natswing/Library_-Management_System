@@ -25,4 +25,4 @@ values('Ved Library','Patelnagar','623400','9826423425'),
 ('Nalanda Library','Nalanda University','800231','8262323421');
 
 
- create 
+

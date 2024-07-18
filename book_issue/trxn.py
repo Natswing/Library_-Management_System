@@ -14,21 +14,11 @@ def trxn_logic(trxn_info):
     data=booking_validator(username,book_id)
     logger.info(f"{data}")
     if not data:
-        return{"Message":"User alredy has a booking"}
+        return{"Message":"User already has a booking"}
     rent_cost =result[0]['rent_cost']
     library_id=result[0]['library_id']
-    insert_query=f"""insert into trxn_log (user_name,library_id,book_id,rent_cost,
-    issue_date,due_date) values ('{username}',{library_id},{book_id},{rent_cost},
-    cast(now() as date),DATE_ADD(cast(now() as date),INTERVAL 30 DAY))"""
-    mysql_obj.writer(insert_query)
-
-    select_query=f"""select no_of_books from
-    inventory where book_id={book_id}"""
-    result=mysql_obj.reader(select_query)
-    logger.info(f"{type(result)}")
-    result=result[0]["no_of_books"]
-    update_query=f"""update inventory set no_of_books = ({result}-1) where book_id={book_id}"""
-    mysql_obj.writer(update_query)
+    update_trxn_tbl(username,library_id,book_id,rent_cost)
+    update_inventory_tbl(book_id)
     return {"Message":"Booking Successful"}
 
 def booking_validator(username,book_id)->bool:
@@ -39,6 +29,24 @@ def booking_validator(username,book_id)->bool:
         return False
     else :
         return True
+    
+
+def update_trxn_tbl(username,library_id,book_id,rent_cost):
+    insert_query=f"""insert into trxn_log (user_name,library_id,book_id,rent_cost,
+    issue_date,due_date) values ('{username}',{library_id},{book_id},{rent_cost},
+    cast(now() as date),DATE_ADD(cast(now() as date),INTERVAL 30 DAY))"""
+    mysql_obj.writer(insert_query)
+
+
+def update_inventory_tbl(book_id):
+    select_query=f"""select no_of_books from
+    inventory where book_id={book_id}"""
+    result=mysql_obj.reader(select_query)
+    logger.info(f"{type(result)}")
+    result=result[0]["no_of_books"]
+    update_query=f"""update inventory set no_of_books = ({result}-1) 
+      where book_id={book_id}"""
+    mysql_obj.writer(update_query)
 
 
 

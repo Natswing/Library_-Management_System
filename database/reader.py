@@ -26,3 +26,4 @@ class MySqlConnection:
         result=cursor.execute(query)
         self.connection.commit()
         cursor.close()
+        logger.info("Query ran succesfully")

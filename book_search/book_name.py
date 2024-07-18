@@ -10,7 +10,7 @@ def find_book_name_from_tbl(keyword):
         return {"Message": "Book Not found"}
     else:
         logger.info(f"{result}")
-        column_list=["name","department",'author']
+        column_list=["name","department",'author',"rent_cost"]
         final_result=[]
         for i in range (len(result)):
             d={}

@@ -7,6 +7,7 @@ from login_logout.user_login import *
 from book_search.book_name import *
 from book_search.book_avl import *
 from book_issue.trxn import *
+from book_return.book_return import *
 
 
 app = FastAPI()
@@ -50,6 +51,12 @@ def issue_book(trxn_info:BookIssue):
     result=trxn_logic(trxn_info)
     return result
 
+@app.post("/return_book")
+def return_book(return_info:ReturnBook):
+    return_info=return_info.model_dump()
+    logger.info(f"{return_info}")
+    result=return_logic(return_info)
+    return result
 
 
     
