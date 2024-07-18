@@ -21,5 +21,6 @@ class BookIssue(BaseModel):
     username:str
     book_name:str
 
-# class Returnbook(BaseModel)
-    
+class ReturnBook(BaseModel):
+    username:str
+    book_name:str    
