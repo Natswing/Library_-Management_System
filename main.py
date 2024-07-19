@@ -56,7 +56,7 @@ def return_book(return_info:ReturnBook):
     return_info=return_info.model_dump()
     logger.info(f"{return_info}")
     result=return_logic(return_info)
-    return result
+    return {"Message" : f"Total rent to be paid is {result}"}
 
 
     
