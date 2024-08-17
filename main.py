@@ -8,6 +8,8 @@ from book_search.book_name import *
 from book_search.book_avl import *
 from book_issue.trxn import *
 from book_return.book_return import *
+from new_book_update.new_book_log import *
+from new_book_update.inventory_update import *
 
 
 app = FastAPI()
@@ -59,7 +61,26 @@ def return_book(return_info:ReturnBook):
     return {"Message" : f"Total rent to be paid is {result}"}
 
 
-    
-@app.get("/items/{item_id}")
-def read_item(item_id: int, q: Union[str, None] = None):
-    return {"item_id": item_id, "q": q}
+@app.post("/book_log_update")
+def book_log_update(new_book_info:NewBookLog):
+    new_book_info=new_book_info.model_dump()
+    logger.info(f"{new_book_info}")
+    result=new_book_update_logic(new_book_info)
+    return result
+
+@app.post("/new_book_inventory_update")
+def new_book_inventory_update(new_book_inventory_info:NewBookInventoryData):
+    new_book_inventory_info=new_book_inventory_info.model_dump()
+    logger.info(f"{new_book_inventory_info}")
+    result=new_book_update_logic(new_book_inventory_info)
+    return result
+
+@app.post("/inventory_update")
+def inventory_update(inventory_update_info:NewBookInventoryData):
+    inventory_update_info=inventory_update_info.model_dump()
+    logger.info(f"{inventory_update_info}")
+    result=new_book_inventory_update_logic(inventory_update_info)
+    return result
+
+
+   
